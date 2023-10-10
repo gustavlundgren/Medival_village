@@ -42,12 +42,6 @@ public class PlayerController : MonoBehaviour
         move = cameraTransform.forward * move.z + cameraTransform.right * move.x;
         move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
-
-        //if (move != Vector3.zero)
-        //{
-        //    gameObject.transform.forward = move;
-        //}
-
        
         if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
         {
@@ -75,6 +69,31 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+        if(Physics.Raycast(cam.position, cam.forward, out RaycastHit h, maxUseDistance, useLayer))
+        {
+            if(h.collider.TryGetComponent<Door>(out Door door)) 
+            {
+                if(!door.isOpen)
+                {
+                    useText.SetText("Open E");
+
+                } 
+                else
+                {
+                    useText.SetText("Close E");
+                }
+            }
+            
+
+            useText.gameObject.SetActive(true);
+            useText.transform.position = h.point - (h.point - cam.position).normalized * 0.01f;
+            useText.transform.rotation = Quaternion.LookRotation((h.point - cam.position).normalized);
+        }
+        else
+        {
+            useText.gameObject.SetActive(false);
+        } 
 
 
     }

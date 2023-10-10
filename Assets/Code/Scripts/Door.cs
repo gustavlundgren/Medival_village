@@ -7,7 +7,8 @@ public class Door : MonoBehaviour
     public bool isOpen = false;
     [SerializeField] private bool isRotatingDoor= true;
     [SerializeField] private float speed= 1f;
-    [SerializeField] private Transform rotationPoint;
+
+    // [SerializeField] private Transform rotationPoint;
 
     [Header("Rotation Configs")]
     [SerializeField] float rotationAmount = 90f;
@@ -20,7 +21,7 @@ public class Door : MonoBehaviour
 
     private void Awake()
     {
-        startingRotation = rotationPoint.rotation.eulerAngles;
+        startingRotation = transform.rotation.eulerAngles;
         // Motverka bugg med att man inte kan veta vilken sida av dörren som spelaren står på
         forward = transform.right;
     }
@@ -36,7 +37,7 @@ public class Door : MonoBehaviour
 
             if(isRotatingDoor)
             {
-                float dot = Vector3.Dot(forward, (playerPosition - rotationPoint.position).normalized);
+                float dot = Vector3.Dot(forward, (playerPosition - transform.position).normalized);
                 Debug.Log($"Dot: {dot.ToString("N3")}");
                 animationCoroutine = StartCoroutine(doRotationOpen(dot));
             }
@@ -45,7 +46,7 @@ public class Door : MonoBehaviour
 
     private IEnumerator doRotationOpen(float forwardAmount)
     {
-        Quaternion startRotation = rotationPoint.rotation;
+        Quaternion startRotation = transform.rotation;
         Quaternion endRotation;
 
         if(forwardAmount >= forwardDirection)
@@ -63,7 +64,7 @@ public class Door : MonoBehaviour
 
         while(time<1) 
         { 
-            rotationPoint.rotation = Quaternion.Slerp(startRotation, endRotation, (float)time);
+            transform.rotation = Quaternion.Slerp(startRotation, endRotation, (float)time);
 
 
             yield return null;
@@ -91,13 +92,13 @@ public class Door : MonoBehaviour
 
     private IEnumerator doRotationClose()
     {
-        Quaternion startRotation = rotationPoint.rotation;
+        Quaternion startRotation = transform.rotation;
         Quaternion endRotation = Quaternion.Euler(startingRotation);
 
         float time = 0f;
         while(time<1)
         {
-            rotationPoint.rotation = Quaternion.Slerp(startRotation, endRotation,(float)time);
+            transform.rotation = Quaternion.Slerp(startRotation, endRotation,(float)time);
             yield return null;
             time += Time.deltaTime * speed;
         }
