@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IInteractableObjectParent
 {
     [Header("Movement Configs")]
     [SerializeField] private float playerSpeed = 2.0f;
@@ -14,12 +14,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform cam;
     [SerializeField] private float maxUseDistance;
     [SerializeField] private LayerMask useLayer;
+    [SerializeField] private Transform holdPoint;
 
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     private InputManager inputManager;
     private Transform cameraTransform;
+    private InteractableObject interactableObject;
     
 
     private void Start()
@@ -49,10 +51,13 @@ public class PlayerController : MonoBehaviour
 
             if (hit.collider.TryGetComponent<Chest>(out Chest chest))
             {
-                chest.Open();
+                chest.Interact(this);
             }
 
-
+            if (hit.collider.TryGetComponent<Table>(out Table table))
+            {
+                table.Interact(this);
+            }
         }
     }
 
@@ -106,7 +111,26 @@ public class PlayerController : MonoBehaviour
 
             if (h.collider.TryGetComponent<Chest>(out Chest chest))
             {
-                useText.SetText("Open E");
+                if(!chest.HasInteractableObject())
+                {
+                    useText.SetText("Open E");
+                } else
+                {
+                    useText.SetText("Grab E");
+                }                
+            }
+
+            if (h.collider.TryGetComponent<Table>(out Table table))
+            {
+                if(!table.HasInteractableObject())
+                {
+                    useText.SetText("Drop E");
+                } else
+                {
+                    useText.SetText("Grab E");
+                }
+
+
             }
 
 
@@ -118,5 +142,31 @@ public class PlayerController : MonoBehaviour
         {
             useText.gameObject.SetActive(false);
         }
+    }
+
+
+    public Transform GetInteractableObjectFollowTransform()
+    {
+        return holdPoint;
+    }
+
+    public void SetInteractableObject(InteractableObject interactableObject)
+    {
+        this.interactableObject = interactableObject;
+    }
+
+    public InteractableObject GetInteractableObject()
+    {
+        return interactableObject;
+    }
+
+    public void ClearInteractableObject()
+    {
+        interactableObject = null;
+    }
+
+    public bool HasInteractableObject()
+    {
+        return interactableObject != null;
     }
 }
