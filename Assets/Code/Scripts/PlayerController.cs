@@ -4,11 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement Configs")]
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
 
-    [Header("Door Use")]
+    [Header("Interaction Configs")]
     [SerializeField] private TextMeshPro useText;
     [SerializeField] private Transform cam;
     [SerializeField] private float maxUseDistance;
@@ -26,9 +27,42 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         inputManager = InputManager.Instance;
         cameraTransform = Camera.main.transform;
+
+        inputManager.OnUseAction += InputManager_OnUseAction;
+    }
+
+    private void InputManager_OnUseAction(object sender, System.EventArgs e)
+    {
+        if (Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, maxUseDistance, useLayer))
+        {
+            if (hit.collider.TryGetComponent<Door>(out Door door))
+            {
+                if (door.isOpen)
+                {
+                    door.Close();
+                }
+                else
+                {
+                    door.Open(transform.position);
+                }
+            }
+
+            if (hit.collider.TryGetComponent<Chest>(out Chest chest))
+            {
+                chest.Open();
+            }
+
+
+        }
     }
 
     void Update()
+    {
+        HandleMovement();
+        HandleInteractionText();
+    }
+
+    private void HandleMovement()
     {
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
@@ -42,7 +76,7 @@ public class PlayerController : MonoBehaviour
         move = cameraTransform.forward * move.z + cameraTransform.right * move.x;
         move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
-       
+
         if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
@@ -51,50 +85,38 @@ public class PlayerController : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
 
+    }
 
-        if(inputManager.PlayerUse())
+    private void HandleInteractionText()
+    {
+        if (Physics.Raycast(cam.position, cam.forward, out RaycastHit h, maxUseDistance, useLayer))
         {
-            if(Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, maxUseDistance, useLayer))
+            if (h.collider.TryGetComponent<Door>(out Door door))
             {
-                if(hit.collider.TryGetComponent<Door>(out Door door))
-                {
-                    if(door.isOpen)
-                    {
-                        door.Close();
-                    }
-                    else
-                    {
-                        door.Open(transform.position);
-                    }
-                }
-            }
-        }
-
-        if(Physics.Raycast(cam.position, cam.forward, out RaycastHit h, maxUseDistance, useLayer))
-        {
-            if(h.collider.TryGetComponent<Door>(out Door door)) 
-            {
-                if(!door.isOpen)
+                if (!door.isOpen)
                 {
                     useText.SetText("Open E");
 
-                } 
+                }
                 else
                 {
                     useText.SetText("Close E");
                 }
             }
-            
+
+            if (h.collider.TryGetComponent<Chest>(out Chest chest))
+            {
+                useText.SetText("Open E");
+            }
+
 
             useText.gameObject.SetActive(true);
-            useText.transform.position = h.point - (h.point - cam.position).normalized * 0.01f;
+            useText.transform.position = h.point - (h.point - cam.position).normalized * 0.1f;
             useText.transform.rotation = Quaternion.LookRotation((h.point - cam.position).normalized);
         }
         else
         {
             useText.gameObject.SetActive(false);
-        } 
-
-
+        }
     }
 }

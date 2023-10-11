@@ -8,8 +8,6 @@ public class Door : MonoBehaviour
     [SerializeField] private bool isRotatingDoor= true;
     [SerializeField] private float speed= 1f;
 
-    // [SerializeField] private Transform rotationPoint;
-
     [Header("Rotation Configs")]
     [SerializeField] float rotationAmount = 90f;
     [SerializeField] float forwardDirection = 0f;
@@ -38,7 +36,6 @@ public class Door : MonoBehaviour
             if(isRotatingDoor)
             {
                 float dot = Vector3.Dot(forward, (playerPosition - transform.position).normalized);
-                Debug.Log($"Dot: {dot.ToString("N3")}");
                 animationCoroutine = StartCoroutine(doRotationOpen(dot));
             }
         }
