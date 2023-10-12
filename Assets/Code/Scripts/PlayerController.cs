@@ -111,10 +111,15 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
             if (h.collider.TryGetComponent<Chest>(out Chest chest))
             {
-                if(!chest.HasInteractableObject())
+                if(!chest.ChestIsOpen())
                 {
                     useText.SetText("Open E");
-                } else
+                }else
+                {
+                    useText.SetText("");
+                }
+                
+                if(chest.HasInteractableObject())
                 {
                     useText.SetText("Grab E");
                 }                
@@ -122,7 +127,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
             if (h.collider.TryGetComponent<Table>(out Table table))
             {
-                if(!table.HasInteractableObject())
+                if(!table.HasInteractableObject() && HasInteractableObject())
                 {
                     useText.SetText("Drop E");
                 } else

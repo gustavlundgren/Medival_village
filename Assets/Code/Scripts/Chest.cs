@@ -7,29 +7,25 @@ public class Chest : MonoBehaviour, IInteractableObjectParent
     [SerializeField] private InteractableObjectSO interactableObjectSO;
     [SerializeField] private Transform chestTopPoint;
 
-    [SerializeField] private Chest secondChest;
-    [SerializeField] private bool testing;
+    [SerializeField] private Animator animator;
 
 
+
+    private bool isOpened;
     private InteractableObject interactableObject;
 
-    private void Update()
-    {
-        if(testing && Input.GetKeyDown(KeyCode.T)) {
-            if(interactableObject != null)
-            {
-                interactableObject.SetInteractableObjectParent(secondChest);
-            }
-        }
-        
-    }
+  
 
     public void Interact(PlayerController player)
     {
-        if (interactableObject == null)
+        if (interactableObject == null && !isOpened)
         {
+            animator.SetTrigger("Open");
+
             Transform interactableObjectTransform = Instantiate(interactableObjectSO.prefab, chestTopPoint);
             interactableObjectTransform.GetComponent<InteractableObject>().SetInteractableObjectParent(this);
+
+            isOpened = true;
         } else if(!player.HasInteractableObject())
         {
             interactableObject.SetInteractableObjectParent(player);
@@ -59,5 +55,10 @@ public class Chest : MonoBehaviour, IInteractableObjectParent
     public bool HasInteractableObject()
     {
         return interactableObject != null;
+    }
+
+    public bool ChestIsOpen()
+    {
+        return isOpened;
     }
 }
