@@ -22,7 +22,22 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     private InputManager inputManager;
     private Transform cameraTransform;
     private InteractableObject interactableObject;
-    
+
+    private static PlayerController _instance;
+    public static PlayerController Instance;
+
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
 
     private void Start()
     {
@@ -152,6 +167,8 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
     public Transform GetInteractableObjectFollowTransform()
     {
+        holdPoint.position = transform.forward;
+
         return holdPoint;
     }
 
