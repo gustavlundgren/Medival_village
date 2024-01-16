@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour, IInteractableObjectParent
@@ -54,14 +55,26 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         {
             if (hit.collider.TryGetComponent<Door>(out Door door))
             {
-                if (door.isOpen)
+                if (door.GetDoorIsLocked())
                 {
-                    door.Close();
+                    if (GetInteractableObject())
+                    {
+                        door.Open(transform.position);
+                    }
                 }
                 else
                 {
-                    door.Open(transform.position);
+                    if (door.isOpen)
+                    {
+                        door.Close();
+                    }
+                    else
+                    {
+                        door.Open(transform.position);
+                    }
                 }
+                
+                
             }
 
             if (hit.collider.TryGetComponent<Chest>(out Chest chest))
@@ -80,6 +93,14 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     {
         HandleMovement();
         HandleInteractionText();
+
+        Vector2 deltaInput = inputManager.GetMouseDelta();
+        Vector3 startingPosition = holdPoint.localPosition;
+        float horizontalSpeed = 2f;
+
+        startingPosition.x += deltaInput.x * horizontalSpeed * Time.deltaTime;
+
+        holdPoint.localPosition = startingPosition;
     }
 
     private void HandleMovement()
@@ -113,14 +134,21 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         {
             if (h.collider.TryGetComponent<Door>(out Door door))
             {
-                if (!door.isOpen)
+                if (door.GetDoorIsLocked() && !GetInteractableObject())
                 {
-                    useText.SetText("Open E");
-
+                    useText.SetText("Door is Locked");
                 }
                 else
                 {
-                    useText.SetText("Close E");
+                    if (!door.isOpen)
+                    {
+                        useText.SetText("Open E");
+
+                    }
+                    else
+                    {
+                        useText.SetText("Close E");
+                    }
                 }
             }
 
@@ -167,7 +195,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
     public Transform GetInteractableObjectFollowTransform()
     {
-        holdPoint.position = transform.forward;
+        // holdPoint.position = transform.forward;
 
         return holdPoint;
     }

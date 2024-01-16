@@ -5,6 +5,8 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     public bool isOpen = false;
+    
+    [SerializeField] private bool isLoocked;
     [SerializeField] private bool isRotatingDoor= true;
     [SerializeField] private float speed= 1f;
 
@@ -38,6 +40,8 @@ public class Door : MonoBehaviour
                 float dot = Vector3.Dot(forward, (playerPosition - transform.position).normalized);
                 animationCoroutine = StartCoroutine(doRotationOpen(dot));
             }
+
+            isLoocked = false;
         }
     }
 
@@ -100,4 +104,6 @@ public class Door : MonoBehaviour
             time += Time.deltaTime * speed;
         }
     }
+
+    public bool GetDoorIsLocked() { return isLoocked; }
 }
