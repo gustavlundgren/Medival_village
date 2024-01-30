@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -9,6 +10,8 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
+    [SerializeField] private float distanceInFront = 0.7f;
+
 
     [Header("Interaction Configs")]
     [SerializeField] private TextMeshPro useText;
@@ -86,21 +89,33 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
             {
                 table.Interact(this);
             }
+
         }
+        else
+        {
+            if (this.interactableObject && this.interactableObject.GetInteractableObjectSO().objectName == "Bow")
+            {
+                this.interactableObject.TryGetComponent<Bow>(out Bow bow);
+                bow.Shoot(this.holdPoint);
+            }
+        }
+
     }
 
     void Update()
     {
         HandleMovement();
         HandleInteractionText();
+        HandleHoldpoint();
+    }
 
-        Vector2 deltaInput = inputManager.GetMouseDelta();
-        Vector3 startingPosition = holdPoint.localPosition;
-        float horizontalSpeed = 2f;
+    private void HandleHoldpoint()
+    {
+        Vector3 targetPosition = cameraTransform.position + cameraTransform.forward * distanceInFront;
 
-        startingPosition.x += deltaInput.x * horizontalSpeed * Time.deltaTime;
-
-        holdPoint.localPosition = startingPosition;
+        holdPoint.position = targetPosition;
+       
+        this.interactableObject.transform.rotation = cameraTransform.rotation;
     }
 
     private void HandleMovement()
@@ -117,6 +132,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         move = cameraTransform.forward * move.z + cameraTransform.right * move.x;
         move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
+
 
         if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
         {
@@ -195,8 +211,6 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
     public Transform GetInteractableObjectFollowTransform()
     {
-        // holdPoint.position = transform.forward;
-
         return holdPoint;
     }
 

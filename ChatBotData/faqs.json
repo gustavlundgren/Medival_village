@@ -1,0 +1,17 @@
+[
+  {
+    "question": "Where is the next key?",
+    "answers": ["In the big house", "In the small house", "In the church"]
+  },
+
+  {
+    "question": "Where is the weapons?",
+    "answers": ["Behind the well", "At the foot of the tallest mountain"]
+  },
+  {
+    "question": "Who are you",
+    "answers": [
+      "I am the mayor of this small town, if you need to know anything you can always come back and ask me later!"
+    ]
+  }
+]
