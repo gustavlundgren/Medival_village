@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using UnityEngine;
 
 public class ChatBot : MonoBehaviour
@@ -18,9 +17,7 @@ public class ChatBot : MonoBehaviour
 
     public string GetAnswer(string question)
     {
-        
 
-        
         return "Janne";
     }
 
@@ -30,7 +27,9 @@ public class ChatBot : MonoBehaviour
         {
             var json = File.ReadAllText(jsonPath);
 
-            return JsonConvert.DeserializeObject<List<FAQ>>(json);
+            // return JsonConvert.DeserializeObject<List<FAQ>>(json);
+
+            return new List<FAQ>();
         }
         catch
         {
@@ -39,8 +38,8 @@ public class ChatBot : MonoBehaviour
     }
 }
 
-public class FAQ 
-{ 
+public class FAQ
+{
     public string question { get; set; }
     public string answers { get; set; }
 }

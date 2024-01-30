@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2caa4b0a7895a7b43aed775d598ffd62, type: 3}
   m_Name: Bow
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7820666914916579709, guid: a6b25e3d19b64264ca07b45e4edcdfea, type: 3}
+  prefab: {fileID: 1358649712348421897, guid: 920262f23f23e9442be35afaebd6d1a0, type: 3}
   objectName: Bow

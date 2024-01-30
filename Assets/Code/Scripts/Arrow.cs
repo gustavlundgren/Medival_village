@@ -8,5 +8,14 @@ public class Arrow : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         print(collision.gameObject.name);
+
+        StartCoroutine(despawn());
+    }
+
+    IEnumerator despawn()
+    {
+        yield return new WaitForSecondsRealtime(2);
+
+        Destroy(this);
     }
 }
