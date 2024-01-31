@@ -29,6 +29,7 @@ public class InteractableObject : MonoBehaviour
 
         transform.parent = interactableObjectParent.GetInteractableObjectFollowTransform();
         transform.localPosition = Vector3.zero;
+     
     }
 
     public IInteractableObjectParent GetInteractableObjectParent() { return interactableObjectParent; }

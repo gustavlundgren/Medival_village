@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour, IInteractableObjectParent
@@ -8,6 +10,8 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
+    [SerializeField] private float distanceInFront = 0.7f;
+
 
     [Header("Interaction Configs")]
     [SerializeField] private TextMeshPro useText;
@@ -54,14 +58,26 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         {
             if (hit.collider.TryGetComponent<Door>(out Door door))
             {
-                if (door.isOpen)
+                if (door.GetDoorIsLocked())
                 {
-                    door.Close();
+                    if (GetInteractableObject())
+                    {
+                        door.Open(transform.position);
+                    }
                 }
                 else
                 {
-                    door.Open(transform.position);
+                    if (door.isOpen)
+                    {
+                        door.Close();
+                    }
+                    else
+                    {
+                        door.Open(transform.position);
+                    }
                 }
+                
+                
             }
 
             if (hit.collider.TryGetComponent<Chest>(out Chest chest))
@@ -73,13 +89,33 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
             {
                 table.Interact(this);
             }
+
         }
+        else
+        {
+            if (this.interactableObject && this.interactableObject.GetInteractableObjectSO().objectName == "Bow")
+            {
+                this.interactableObject.TryGetComponent<Bow>(out Bow bow);
+                bow.Shoot(this.holdPoint);
+            }
+        }
+
     }
 
     void Update()
     {
         HandleMovement();
         HandleInteractionText();
+        HandleHoldpoint();
+    }
+
+    private void HandleHoldpoint()
+    {
+        Vector3 targetPosition = cameraTransform.position + cameraTransform.forward * distanceInFront;
+
+        holdPoint.position = targetPosition;
+       
+        this.interactableObject.transform.rotation = cameraTransform.rotation;
     }
 
     private void HandleMovement()
@@ -97,6 +133,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
 
+
         if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
@@ -113,14 +150,21 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         {
             if (h.collider.TryGetComponent<Door>(out Door door))
             {
-                if (!door.isOpen)
+                if (door.GetDoorIsLocked() && !GetInteractableObject())
                 {
-                    useText.SetText("Open E");
-
+                    useText.SetText("Door is Locked");
                 }
                 else
                 {
-                    useText.SetText("Close E");
+                    if (!door.isOpen)
+                    {
+                        useText.SetText("Open E");
+
+                    }
+                    else
+                    {
+                        useText.SetText("Close E");
+                    }
                 }
             }
 
@@ -167,8 +211,6 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
     public Transform GetInteractableObjectFollowTransform()
     {
-        holdPoint.position = transform.forward;
-
         return holdPoint;
     }
 
