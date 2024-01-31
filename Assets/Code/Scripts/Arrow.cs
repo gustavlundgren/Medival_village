@@ -16,6 +16,6 @@ public class Arrow : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2);
 
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

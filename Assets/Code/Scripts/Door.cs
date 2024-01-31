@@ -6,7 +6,7 @@ public class Door : MonoBehaviour
 {
     public bool isOpen = false;
     
-    [SerializeField] private bool isLoocked;
+    [SerializeField] private bool isLocked;
     [SerializeField] private bool isRotatingDoor= true;
     [SerializeField] private float speed= 1f;
 
@@ -22,7 +22,7 @@ public class Door : MonoBehaviour
     private void Awake()
     {
         startingRotation = transform.rotation.eulerAngles;
-        // Motverka bugg med att man inte kan veta vilken sida av dörren som spelaren står på
+        // Motverka bugg med att man inte kan veta vilken sida av dorren som spelaren star pa
         forward = transform.right;
     }
 
@@ -41,7 +41,7 @@ public class Door : MonoBehaviour
                 animationCoroutine = StartCoroutine(doRotationOpen(dot));
             }
 
-            isLoocked = false;
+            isLocked = false;
         }
     }
 
@@ -105,5 +105,5 @@ public class Door : MonoBehaviour
         }
     }
 
-    public bool GetDoorIsLocked() { return isLoocked; }
+    public bool GetDoorIsLocked() { return isLocked; }
 }

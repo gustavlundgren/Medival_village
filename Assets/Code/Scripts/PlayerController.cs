@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
             {
                 if (door.GetDoorIsLocked())
                 {
-                    if (GetInteractableObject())
+                    if (GetInteractableObject().GetInteractableObjectSO().objectName == "key")
                     {
                         door.Open(transform.position);
                     }
@@ -76,8 +76,8 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
                         door.Open(transform.position);
                     }
                 }
-                
-                
+
+
             }
 
             if (hit.collider.TryGetComponent<Chest>(out Chest chest))
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         Vector3 targetPosition = cameraTransform.position + cameraTransform.forward * distanceInFront;
 
         holdPoint.position = targetPosition;
-       
+
         this.interactableObject.transform.rotation = cameraTransform.rotation;
     }
 
@@ -170,26 +170,28 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
             if (h.collider.TryGetComponent<Chest>(out Chest chest))
             {
-                if(!chest.ChestIsOpen())
+                if (!chest.ChestIsOpen())
                 {
                     useText.SetText("Open E");
-                }else
+                }
+                else
                 {
                     useText.SetText("");
                 }
-                
-                if(chest.HasInteractableObject())
+
+                if (chest.HasInteractableObject())
                 {
                     useText.SetText("Grab E");
-                }                
+                }
             }
 
             if (h.collider.TryGetComponent<Table>(out Table table))
             {
-                if(!table.HasInteractableObject() && HasInteractableObject())
+                if (!table.HasInteractableObject() && HasInteractableObject())
                 {
                     useText.SetText("Drop E");
-                } else
+                }
+                else
                 {
                     useText.SetText("Grab E");
                 }
