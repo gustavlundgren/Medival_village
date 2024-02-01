@@ -13,26 +13,20 @@ public class Bow : MonoBehaviour
         cameraTransform = Camera.main.transform;
     }
 
-    private void Update()
-    {
-        //Quaternion rotation = Quaternion.Euler(0, cameraTransform.rotation.y, cameraTransform.rotation.z * -100);
-
-        //if(PlayerController.Instance.GetInteractableObject() == this)
-        //{
-            
-        //}
-    }
-
-    public void Shoot(Transform holdpoint)
+    public void Shoot(Transform holdpoint, Vector2 currentSpeed)
     {
 
-        // Hitta en position lite framför bågen så att det inte sker en krock mellan bågen och pilen när den startar
-        float distanceInFront = 0.4f;
-        Vector3 targetPosition = holdpoint.position + holdpoint.forward * distanceInFront;
+        print(currentSpeed);
 
-        Transform arrow = Instantiate(arrowPrefab, targetPosition, cameraTransform.rotation);
-        Rigidbody arrowRigidbody = arrow.GetComponent<Rigidbody>();
+        if (currentSpeed == Vector2.zero)
+        {
+            float distanceInFront = 0.4f;
+            Vector3 targetPosition = holdpoint.position + holdpoint.forward * distanceInFront;
 
-        arrowRigidbody.AddForce(cameraTransform.forward * 1f, ForceMode.Impulse);
+            Transform arrow = Instantiate(arrowPrefab, targetPosition, cameraTransform.rotation);
+            Rigidbody arrowRigidbody = arrow.GetComponent<Rigidbody>();
+
+            arrowRigidbody.AddForce(cameraTransform.forward * 1f, ForceMode.Impulse);
+        }
     }
 }

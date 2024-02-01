@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+
 public class ChatBot : MonoBehaviour
 {
     private List<FAQ> faqs;
 
     private void Start()
     {
-        faqs = GetFaqs("faqs.json");
+        faqs = GetFaqs("C:/Users/GustavLundgren/Desktop/Unity/3D/Gymnaisearbete-Medival_Village/ChatBotData");
     }
 
     // On interaction

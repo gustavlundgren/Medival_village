@@ -60,9 +60,10 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
             {
                 if (door.GetDoorIsLocked())
                 {
-                    if (GetInteractableObject().GetInteractableObjectSO().objectName == "key")
+                    if (GetInteractableObject().GetInteractableObjectSO().objectName == "Key")
                     {
                         door.Open(transform.position);
+                        ClearInteractableObject();
                     }
                 }
                 else
@@ -76,8 +77,6 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
                         door.Open(transform.position);
                     }
                 }
-
-
             }
 
             if (hit.collider.TryGetComponent<Chest>(out Chest chest))
@@ -90,13 +89,18 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
                 table.Interact(this);
             }
 
+            if (hit.collider.TryGetComponent<NPC>(out NPC npc))
+            {
+                print(npc.Interact("Janne"));
+            }
+
         }
         else
         {
             if (this.interactableObject && this.interactableObject.GetInteractableObjectSO().objectName == "Bow")
             {
                 this.interactableObject.TryGetComponent<Bow>(out Bow bow);
-                bow.Shoot(this.holdPoint);
+                bow.Shoot(this.holdPoint, inputManager.GetPlayerMovement());
             }
         }
 
@@ -106,7 +110,12 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     {
         HandleMovement();
         HandleInteractionText();
-        HandleHoldpoint();
+
+        if (HasInteractableObject())
+        {
+            HandleHoldpoint();
+
+        }
     }
 
     private void HandleHoldpoint()
@@ -148,9 +157,12 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     {
         if (Physics.Raycast(cam.position, cam.forward, out RaycastHit h, maxUseDistance, useLayer))
         {
+
+            // TODO Möjlig refactor
+
             if (h.collider.TryGetComponent<Door>(out Door door))
             {
-                if (door.GetDoorIsLocked() && !GetInteractableObject())
+                if (door.GetDoorIsLocked() && GetInteractableObject().GetInteractableObjectSO().objectName != "Key")
                 {
                     useText.SetText("Door is Locked");
                 }
@@ -191,12 +203,15 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
                 {
                     useText.SetText("Drop E");
                 }
-                else
+                else if (table.HasInteractableObject() && !HasInteractableObject())
                 {
                     useText.SetText("Grab E");
                 }
+            }
 
-
+            if (h.collider.TryGetComponent<NPC>(out NPC npc))
+            {
+                useText.SetText("Talk E");
             }
 
 

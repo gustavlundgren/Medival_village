@@ -12,14 +12,14 @@ public class Table : MonoBehaviour, IInteractableObjectParent
     {
         if (!HasInteractableObject())
         {
-            if(player.HasInteractableObject())
+            if (player.HasInteractableObject())
             {
                 player.GetInteractableObject().SetInteractableObjectParent(this);
-            } 
-        } 
+            }
+        }
         else
         {
-            if(!player.HasInteractableObject())
+            if (!player.HasInteractableObject())
             {
                 GetInteractableObject().SetInteractableObjectParent(player);
             }
