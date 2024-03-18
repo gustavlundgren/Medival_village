@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         {
             if (hit.collider.TryGetComponent<Door>(out Door door))
             {
-                if (door.GetDoorIsLocked())
+                if (door.GetDoorIsLocked() && HasInteractableObject())
                 {
                     if (GetInteractableObject().GetInteractableObjectSO().objectName == "Key")
                     {
@@ -93,6 +93,11 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
             if (hit.collider.TryGetComponent<Table>(out Table table))
             {
                 table.Interact(this);
+            }
+
+            if (hit.collider.TryGetComponent<Target>(out Target target))
+            {
+                target.Interact(this);
             }
 
             if (hit.collider.TryGetComponent<NPC>(out NPC npc))
@@ -179,7 +184,14 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
             if (h.collider.TryGetComponent<Door>(out Door door))
             {
-                if (door.GetDoorIsLocked() && GetInteractableObject().GetInteractableObjectSO().objectName != "Key")
+                if (door.GetDoorIsLocked() && HasInteractableObject())
+                {
+                    if (GetInteractableObject().GetInteractableObjectSO().objectName != "Key")
+                    {
+                        useText.SetText("Door is Locked");
+                    }
+                }
+                else if (door.GetDoorIsLocked())
                 {
                     useText.SetText("Door is Locked");
                 }
@@ -221,6 +233,14 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
                     useText.SetText("Drop E");
                 }
                 else if (table.HasInteractableObject() && !HasInteractableObject())
+                {
+                    useText.SetText("Grab E");
+                }
+            }
+
+            if (h.collider.TryGetComponent<Target>(out Target target))
+            {
+                if (target.HasInteractableObject() && !HasInteractableObject())
                 {
                     useText.SetText("Grab E");
                 }

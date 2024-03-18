@@ -2,40 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chest : MonoBehaviour, IInteractableObjectParent
+public class Target : MonoBehaviour, IInteractableObjectParent
 {
+    [SerializeField] private Transform keyPos;
     [SerializeField] private InteractableObjectSO interactableObjectSO;
-    [SerializeField] private Transform chestTopPoint;
-
-    [SerializeField] private Animator animator;
-
-
-
-    private bool isOpened;
     private InteractableObject interactableObject;
-
-
 
     public void Interact(PlayerController player)
     {
-        if (!HasInteractableObject() && !isOpened)
-        {
-            animator.SetTrigger("Open");
+        print(player.HasInteractableObject());
 
-            Transform interactableObjectTransform = Instantiate(interactableObjectSO.prefab, chestTopPoint);
-            interactableObjectTransform.GetComponent<InteractableObject>().SetInteractableObjectParent(this);
-
-            isOpened = true;
-        }
-        else if (!player.HasInteractableObject())
+        if (!player.HasInteractableObject())
         {
             interactableObject.SetInteractableObjectParent(player);
         }
     }
 
+    public void SpawnKey()
+    {
+        if (!HasInteractableObject())
+        {
+            Transform interactableObjectTransform = Instantiate(interactableObjectSO.prefab, keyPos);
+
+            interactableObjectTransform.GetComponent<InteractableObject>().SetInteractableObjectParent(this);
+        }
+    }
+
     public Transform GetInteractableObjectFollowTransform()
     {
-        return chestTopPoint;
+        return keyPos;
     }
 
     public void SetInteractableObject(InteractableObject interactableObject)
@@ -46,6 +41,7 @@ public class Chest : MonoBehaviour, IInteractableObjectParent
     public InteractableObject GetInteractableObject()
     {
         return interactableObject;
+
     }
 
     public void ClearInteractableObject()
@@ -58,8 +54,4 @@ public class Chest : MonoBehaviour, IInteractableObjectParent
         return interactableObject != null;
     }
 
-    public bool ChestIsOpen()
-    {
-        return isOpened;
-    }
 }

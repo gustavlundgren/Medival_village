@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
-    [SerializeField] private ChatBot chatBot;
-
+    [SerializeField] private GameObject dialouge;
 
     public string Interact(string question)
     {
-        return chatBot.GetAnswer(question);
+        // dialouge.GetComponent<TextMeshPro>().text = "test";
+        dialouge.SetActive(true);
+        return "Working NPC interactions";
     }
 }
