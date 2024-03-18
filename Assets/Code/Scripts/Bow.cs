@@ -15,9 +15,6 @@ public class Bow : MonoBehaviour
 
     public void Shoot(Transform holdpoint, Vector2 currentSpeed)
     {
-
-        print(currentSpeed);
-
         if (currentSpeed == Vector2.zero)
         {
             float distanceInFront = 0.4f;

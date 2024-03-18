@@ -14,7 +14,7 @@ public class Chest : MonoBehaviour, IInteractableObjectParent
     private bool isOpened;
     private InteractableObject interactableObject;
 
-  
+
 
     public void Interact(PlayerController player)
     {
@@ -26,7 +26,8 @@ public class Chest : MonoBehaviour, IInteractableObjectParent
             interactableObjectTransform.GetComponent<InteractableObject>().SetInteractableObjectParent(this);
 
             isOpened = true;
-        } else if(!player.HasInteractableObject())
+        }
+        else if (!player.HasInteractableObject())
         {
             interactableObject.SetInteractableObjectParent(player);
         }

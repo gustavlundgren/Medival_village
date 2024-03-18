@@ -12,6 +12,12 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float distanceInFront = 0.7f;
 
+    [Header("Camera Config")]
+    [SerializeField] private Vector3 startingRotation;
+    [SerializeField] float clampAngle = 80f;
+    [SerializeField] float verticalSpeed = 10f;
+    [SerializeField] float horizontalSpeed = 10f;
+
 
     [Header("Interaction Configs")]
     [SerializeField] private TextMeshPro useText;
@@ -19,6 +25,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     [SerializeField] private float maxUseDistance;
     [SerializeField] private LayerMask useLayer;
     [SerializeField] private Transform holdPoint;
+    [SerializeField] private Transform playerTransform;
 
     private CharacterController controller;
     private Vector3 playerVelocity;
@@ -26,7 +33,6 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     private InputManager inputManager;
     private Transform cameraTransform;
     private InteractableObject interactableObject;
-
     private static PlayerController _instance;
     public static PlayerController Instance;
 
@@ -110,12 +116,26 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     {
         HandleMovement();
         HandleInteractionText();
+        HandleCamera();
 
         if (HasInteractableObject())
         {
             HandleHoldpoint();
-
         }
+    }
+
+    private void HandleCamera()
+    {
+        if (startingRotation == null) startingRotation = cameraTransform.localRotation.eulerAngles;
+
+        Vector2 deltaInput = inputManager.GetMouseDelta();
+
+        startingRotation.x += deltaInput.x * verticalSpeed * Time.deltaTime;
+        startingRotation.y += deltaInput.y * horizontalSpeed * Time.deltaTime;
+
+        startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);
+
+        playerTransform.rotation = Quaternion.Euler(-startingRotation.y, startingRotation.x, 0f);
     }
 
     private void HandleHoldpoint()
@@ -123,8 +143,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         Vector3 targetPosition = cameraTransform.position + cameraTransform.forward * distanceInFront;
 
         holdPoint.position = targetPosition;
-
-        this.interactableObject.transform.rotation = cameraTransform.rotation;
+        this.interactableObject.transform.rotation = playerTransform.rotation;
     }
 
     private void HandleMovement()
@@ -157,8 +176,6 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     {
         if (Physics.Raycast(cam.position, cam.forward, out RaycastHit h, maxUseDistance, useLayer))
         {
-
-            // TODO Möjlig refactor
 
             if (h.collider.TryGetComponent<Door>(out Door door))
             {
