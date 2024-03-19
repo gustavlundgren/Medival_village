@@ -29,7 +29,7 @@ public class Door : MonoBehaviour
     public void Interact(PlayerController player)
     {
         print(player.HasInteractableObject());
-        print(player.GetInteractableObject().name);
+        // print(player.GetInteractableObject().name);
         
 
         if (player.HasInteractableObject())
