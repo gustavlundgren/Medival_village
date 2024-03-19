@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class NPC : MonoBehaviour
 {
-    [SerializeField] private GameObject dialouge;
-
-    public string Interact(string question)
+    public Dialouge dialouge;
+    public void Interact()
     {
-        // dialouge.GetComponent<TextMeshPro>().text = "test";
-        dialouge.SetActive(true);
-        return "Working NPC interactions";
+        FindObjectOfType<DialougeManager>().StartDialouge(dialouge);
     }
 }

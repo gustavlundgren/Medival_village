@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     [SerializeField] float clampAngle = 80f;
     [SerializeField] float verticalSpeed = 10f;
     [SerializeField] float horizontalSpeed = 10f;
+    public bool isTalking = false;
 
 
     [Header("Interaction Configs")]
@@ -102,7 +103,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
             if (hit.collider.TryGetComponent<NPC>(out NPC npc))
             {
-                print(npc.Interact("Janne"));
+                npc.Interact();
             }
 
         }
@@ -121,7 +122,11 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     {
         HandleMovement();
         HandleInteractionText();
-        HandleCamera();
+
+        if (!isTalking)
+        {
+            HandleCamera();
+        }
 
         if (HasInteractableObject())
         {
@@ -243,6 +248,10 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
                 if (target.HasInteractableObject() && !HasInteractableObject())
                 {
                     useText.SetText("Grab E");
+                }
+                else
+                {
+                    useText.SetText("");
                 }
             }
 
