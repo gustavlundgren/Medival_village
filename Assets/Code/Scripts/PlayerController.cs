@@ -65,25 +65,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         {
             if (hit.collider.TryGetComponent<Door>(out Door door))
             {
-                if (door.GetDoorIsLocked() && HasInteractableObject())
-                {
-                    if (GetInteractableObject().GetInteractableObjectSO().objectName == "Key")
-                    {
-                        door.Open(transform.position);
-                        ClearInteractableObject();
-                    }
-                }
-                else
-                {
-                    if (door.isOpen)
-                    {
-                        door.Close();
-                    }
-                    else
-                    {
-                        door.Open(transform.position);
-                    }
-                }
+                door.Interact(this);
             }
 
             if (hit.collider.TryGetComponent<Chest>(out Chest chest))
@@ -121,11 +103,11 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
     void Update()
     {
         HandleMovement();
-        HandleInteractionText();
 
         if (!isTalking)
         {
             HandleCamera();
+            HandleInteractionText();
         }
 
         if (HasInteractableObject())

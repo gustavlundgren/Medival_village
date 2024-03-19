@@ -26,7 +26,22 @@ public class Door : MonoBehaviour
         forward = transform.forward;
     }
 
-    public void Open(Vector3 playerPosition)
+    public void Interact(PlayerController player)
+    {
+        print(player.HasInteractableObject());
+        print(player.GetInteractableObject().name);
+        
+
+        if (player.HasInteractableObject())
+        {
+            if (player.GetInteractableObject().name == "Key")
+            {
+                print("öppna");
+            }
+        }
+    }
+
+    private void Open(Vector3 playerPosition)
     {
         if (!isOpen)
         {
@@ -74,7 +89,7 @@ public class Door : MonoBehaviour
         }
     }
 
-    public void Close()
+    private void Close()
     {
         if (isOpen)
         {
