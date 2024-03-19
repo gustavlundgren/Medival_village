@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
             if (hit.collider.TryGetComponent<NPC>(out NPC npc))
             {
-                npc.Interact();
+                npc.Interact(this);
             }
 
         }

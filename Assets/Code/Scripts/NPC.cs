@@ -6,8 +6,16 @@ using UnityEngine.Rendering;
 public class NPC : MonoBehaviour
 {
     public Dialouge dialouge;
-    public void Interact()
+    public void Interact(PlayerController player)
     {
-        FindObjectOfType<DialougeManager>().StartDialouge(dialouge);
+        if (player.isTalking)
+        {
+            FindObjectOfType<DialougeManager>().DisplayNextSentence();
+        }
+        else
+        {
+            FindObjectOfType<DialougeManager>().StartDialouge(dialouge);
+        }
+
     }
 }
