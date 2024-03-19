@@ -102,12 +102,13 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
     void Update()
     {
-        HandleMovement();
+        HandleInteractionText();
 
         if (!isTalking)
         {
             HandleCamera();
-            HandleInteractionText();
+
+            HandleMovement();
         }
 
         if (HasInteractableObject())
@@ -171,28 +172,28 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
 
             if (h.collider.TryGetComponent<Door>(out Door door))
             {
-                if (door.GetDoorIsLocked() && HasInteractableObject())
-                {
-                    if (GetInteractableObject().GetInteractableObjectSO().objectName != "Key")
-                    {
-                        useText.SetText("Door is Locked");
-                    }
-                }
-                else if (door.GetDoorIsLocked())
-                {
-                    useText.SetText("Door is Locked");
-                }
-                else
-                {
-                    if (!door.isOpen)
-                    {
-                        useText.SetText("Open E");
 
+                if (door.isOpen)
+                {
+                    useText.SetText("Close E");
+                }
+                else if (door.isLocked)
+                {
+                    if (HasInteractableObject())
+                    {
+                        if (GetInteractableObject().GetInteractableObjectSO().objectName == "Key")
+                        {
+                            useText.SetText("Open E");
+                        }
                     }
                     else
                     {
-                        useText.SetText("Close E");
+                        useText.SetText("Locked");
                     }
+                }
+                else
+                {
+                    useText.SetText("Open E");
                 }
             }
 

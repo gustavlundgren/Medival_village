@@ -9863,6 +9863,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8812509849132986624}
+  - component: {fileID: 3540184513557835672}
   m_Layer: 3
   m_Name: Farmer_Visual
   m_TagString: Untagged
@@ -9890,6 +9891,27 @@ Transform:
   - {fileID: 6092311883567715281}
   m_Father: {fileID: 6633677089054067232}
   m_LocalEulerAnglesHint: {x: 0, y: -31.842, z: 0}
+--- !u!95 &3540184513557835672
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8144623212920286138}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a891278a78ec781428cc817647c48419, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8162773525174789477
 GameObject:
   m_ObjectHideFlags: 0
@@ -9997,7 +10019,6 @@ GameObject:
   - component: {fileID: 6633677089054067232}
   - component: {fileID: 1086835587957521354}
   - component: {fileID: 6713552649294885663}
-  - component: {fileID: 7205735971771866590}
   m_Layer: 3
   m_Name: Farmer
   m_TagString: Untagged
@@ -10039,6 +10060,7 @@ MonoBehaviour:
     - Tjenare mannen!
     - Du tog en citron vatten
     - "Jag tog en s\xE5nd\xE4r m\xE5ltidsdryck"
+    sprite: {fileID: 0}
 --- !u!136 &6713552649294885663
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10062,27 +10084,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!95 &7205735971771866590
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8291824077718212546}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a891278a78ec781428cc817647c48419, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8318501999342524505
 GameObject:
   m_ObjectHideFlags: 0

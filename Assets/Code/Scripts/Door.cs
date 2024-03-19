@@ -5,8 +5,7 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     public bool isOpen = false;
-
-    [SerializeField] private bool isLocked;
+    public bool isLocked;
     [SerializeField] private bool isRotatingDoor = true;
     [SerializeField] private float speed = 1f;
 
@@ -28,17 +27,30 @@ public class Door : MonoBehaviour
 
     public void Interact(PlayerController player)
     {
-        print(player.HasInteractableObject());
-        // print(player.GetInteractableObject().name);
-        
-
-        if (player.HasInteractableObject())
+        if (isOpen)
         {
-            if (player.GetInteractableObject().name == "Key")
+            Close();
+            return;
+        }
+
+        if (isLocked)
+        {
+            if (player.HasInteractableObject())
             {
-                print("öppna");
+                if (player.GetInteractableObject().GetInteractableObjectSO().objectName == "Key")
+                {
+                    Open(player.transform.position);
+
+                    player.GetInteractableObject().transform.position = Vector3.zero;
+                    player.ClearInteractableObject();
+                }
             }
         }
+        else
+        {
+            Open(player.transform.position);
+        }
+
     }
 
     private void Open(Vector3 playerPosition)
@@ -119,6 +131,4 @@ public class Door : MonoBehaviour
             time += Time.deltaTime * speed;
         }
     }
-
-    public bool GetDoorIsLocked() { return isLocked; }
 }

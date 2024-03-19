@@ -9,6 +9,7 @@ public class DialougeManager : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Text nameText;
     [SerializeField] private Text dialougeText;
+    [SerializeField] private Image image;
     [SerializeField] private PlayerController player;
 
     void Start()
@@ -19,9 +20,11 @@ public class DialougeManager : MonoBehaviour
     public void StartDialouge(Dialouge dialouge)
     {
         player.isTalking = true;
+        Cursor.lockState = CursorLockMode.None;
         animator.SetBool("IsOpen", true);
 
         nameText.text = dialouge.name;
+        image.sprite = dialouge.sprite;
 
         sentences.Clear();
 
@@ -59,6 +62,7 @@ public class DialougeManager : MonoBehaviour
 
     void EndDialouge()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         animator.SetBool("IsOpen", false);
         player.isTalking = false;
     }

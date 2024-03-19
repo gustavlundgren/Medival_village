@@ -8,16 +8,17 @@ public class InputManager : MonoBehaviour
     public event EventHandler OnUseAction;
 
     private static InputManager _instance;
-    public static InputManager Instance {  get { return _instance; } }
+    public static InputManager Instance { get { return _instance; } }
 
     private PlayerControls playerControls;
 
     private void Awake()
     {
-        if(_instance != null && _instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(this.gameObject);
-        } else
+        }
+        else
         {
             _instance = this;
         }
@@ -26,6 +27,7 @@ public class InputManager : MonoBehaviour
         Cursor.visible = false;
 
         playerControls.Player.Use.performed += Use_performed;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Use_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
