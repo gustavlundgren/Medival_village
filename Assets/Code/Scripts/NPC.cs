@@ -16,6 +16,5 @@ public class NPC : MonoBehaviour
         {
             FindObjectOfType<DialougeManager>().StartDialouge(dialouge);
         }
-
     }
 }
