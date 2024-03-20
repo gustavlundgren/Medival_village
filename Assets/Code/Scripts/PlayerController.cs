@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour, IInteractableObjectParent
         Vector3 targetPosition = cameraTransform.position + cameraTransform.forward * distanceInFront;
 
         holdPoint.position = targetPosition;
-        this.interactableObject.transform.rotation = playerTransform.rotation;
+        // this.interactableObject.transform.rotation = playerTransform.rotation;
     }
 
     private void HandleMovement()
