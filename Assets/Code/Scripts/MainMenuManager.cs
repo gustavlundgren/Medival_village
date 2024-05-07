@@ -9,9 +9,4 @@ public class MainMenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("Gustav");
     }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
 }

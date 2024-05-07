@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Target : MonoBehaviour, IInteractableObjectParent
 {
@@ -20,12 +21,7 @@ public class Target : MonoBehaviour, IInteractableObjectParent
 
     public void SpawnKey()
     {
-        if (!HasInteractableObject())
-        {
-            Transform interactableObjectTransform = Instantiate(interactableObjectSO.prefab, keyPos);
-
-            interactableObjectTransform.GetComponent<InteractableObject>().SetInteractableObjectParent(this);
-        }
+        SceneManager.LoadScene("End-Scene");
     }
 
     public Transform GetInteractableObjectFollowTransform()

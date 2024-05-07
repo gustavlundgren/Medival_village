@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.003184948, g: 0.0031813057, b: 0.0067141224, a: 1}
+  m_IndirectSpecularColor: {r: 0.0031609314, g: 0.0031910802, b: 0.006670007, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6382,6 +6382,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6544065702891341635, guid: df366901c79e315448a7fc89cd231d5e,
+        type: 3}
+      propertyPath: dialouge.sentences.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6544065702891341635, guid: df366901c79e315448a7fc89cd231d5e,
+        type: 3}
+      propertyPath: dialouge.sentences.Array.data[1]
+      value: "Du skjuter med knappen E p\xE5 ditt tangenbord"
       objectReference: {fileID: 0}
     - target: {fileID: 7317385866013058810, guid: df366901c79e315448a7fc89cd231d5e,
         type: 3}
